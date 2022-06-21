@@ -1,0 +1,13 @@
+{% extends 'home.html' %}
+{% load bootstrap5 %}
+{% block title %}
+    Ponów mecz
+{% endblock %}
+{% block game_subpage %}
+    <h2>Czy na pewno chcesz ponowić ten mecz?</h2>
+    <form action="{% url 'renew_match' pk=rejection.match.opponent.id rej=rejection.id %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input class="btn btn-info" type="submit" value="Edytuj">
+    </form>
+{% endblock %}

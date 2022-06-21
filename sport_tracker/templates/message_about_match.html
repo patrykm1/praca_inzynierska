@@ -1,0 +1,78 @@
+{% extends 'home.html' %}
+{% load bootstrap5 %}
+{% block title %}Komentarz do meczu{% endblock %}
+
+{% block game_subpage %}
+    <style>
+        .message-container {
+            border: 2px solid #dedede;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .message-container::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .time-right {
+            float: right;
+            color: #aaa;
+        }
+    </style>
+    Wiadomość dla użytkownika:
+    {% if user == rejection.match.opponent %}
+        {{ rejection.match.author }}
+    {% else %}
+        {{ rejection.match.opponent }}
+    {% endif %}
+    <br/>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Gra</th>
+            <th>Wynik</th>
+            <th>Przeciwnik</th>
+            <th>Status</th>
+            <th>Zwyciezca</th>
+            <th>Data</th>
+            <th>Komentarz</th>
+            <th>Akcja</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td>{{ rejection.match.game.name }}</td>
+            <td>{{ rejection.match.result }}</td>
+            <td>
+                {% if user == rejection.match.opponent %}
+                    {{ rejection.match.author }}
+                {% else %}
+                    {{ rejection.match.opponent }}
+                {% endif %}
+            </td>
+            <td>{{ rejection.status }}</td>
+            <td><b>{{ rejection.match.winner }}</b></td>
+            <td>{{ rejection.match.date }}</td>
+            <td>{{ rejection.comment }}</td>
+            <td><a href="{% url 'renew_match' pk=rejection.match.author.id rej=rejection.id %}" class="btn btn-info"
+                   role="button" aria-pressed="true">Edytuj</a></td>
+        </tbody>
+    </table>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Wyślij wiadomość"/>
+    </form>
+    {% for message in messages %}
+        <div class="message-container">
+            {{ message.message }}
+            <span class="time-right">{{ message.author }} : {{ message.date }}</span>
+        </div>
+    {% endfor %}
+{% endblock %}

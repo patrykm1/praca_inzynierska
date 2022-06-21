@@ -1,0 +1,25 @@
+{% extends 'home.html' %}
+{% load bootstrap5 %}
+{% block title %}
+    Nowy mecz
+{% endblock %}
+{% block game_subpage %}
+    {% include 'matches_item_actions.html' %}
+    <form method="post" action="." enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <p>
+            <button class="btn btn-info">
+                <input class="btn" type="submit" value="Dodaj"/>
+            </button>
+        </p>
+    </form>
+{% endblock %}
+
